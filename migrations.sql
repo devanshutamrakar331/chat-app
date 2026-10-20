@@ -1,0 +1,45 @@
+create database chat;
+
+CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    mobile_no VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    is_deleted boolean DEFAULT FALSE,
+    deleted_at DATETIME, 
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE chats (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('PRIVATE', 'GROUP') NOT NULL DEFAULT 'PRIVATE',
+    initiated_by_id BIGINT UNSIGNED NOT NULL,
+    session_name VARCHAR(255),
+	is_deleted boolean DEFAULT FALSE,
+    deleted_at DATETIME, 
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     CONSTRAINT fk_users_chat_initiated_by
+       FOREIGN KEY(initiated_by_id)
+       REFERENCES users(id)
+);
+
+CREATE TABLE chat_members (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    chat_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED  NOT NULL,
+	is_deleted boolean DEFAULT FALSE,
+    deleted_at DATETIME, 
+    CONSTRAINT fk_users_cm
+       FOREIGN KEY(user_id)
+       REFERENCES users(id),
+
+    CONSTRAINT fk_chat_cm
+       FOREIGN KEY(chat_id)
+       REFERENCES chats(id),   
+
+    joined_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

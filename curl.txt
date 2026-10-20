@@ -1,0 +1,57 @@
+=========================== CREATE USER ===========================
+curl --location --request POST 'http://localhost:4001/api/users/create' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "name": "Sachin",
+    "mobile_no": "7988093034",
+    "password": "d@123456789"
+  }'
+
+======================= CREATE PRIVATE CHAT =======================
+curl --location --request POST 'http://localhost:4001/api/chats/create' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "type": "PRIVATE",
+    "user_id": [1, 2]
+  }'
+
+======================== CREATE GROUP CHAT ========================
+curl --location --request POST 'http://localhost:4001/api/chats/create' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "type": "GROUP",
+    "user_id": [1, 2, 3],
+    "session_name": "Project discussion",
+    "initiated_by_id": 1
+  }'
+
+========================== SEND MESSAGE ===========================
+curl --location --request POST 'http://localhost:4001/api/chats/1/message/send' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "sender_id": 1,
+    "message": "Hello, everyone!"
+  }'
+
+========================== GET MESSAGES ===========================
+curl --location --request GET 'http://localhost:4001/api/chats/1/messages?limit=50'
+
+======================== MARK MESSAGE READ ========================
+curl --location --request POST 'http://localhost:4001/api/chat/1/message/MESSAGE_ID/read' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "userId": 2
+  }'
+
+====================== UPDATE LAST SEEN MESSAGE ===================
+curl --location --request POST 'http://localhost:4001/api/chat/1/lastseen' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "userId": 2,
+    "messageId": "MESSAGE_ID"
+  }'
+
+========================= LIST USER CHATS =========================
+curl --location --request GET 'http://localhost:4001/api/users/1/chats'
+
+

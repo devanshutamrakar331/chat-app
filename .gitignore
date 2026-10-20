@@ -1,0 +1,9 @@
+node_modules/
+dist/
+
+# Environment & secrets
+.env
+.env.*
+
+# Firebase service account credentials — DO NOT COMMIT
+config.json
